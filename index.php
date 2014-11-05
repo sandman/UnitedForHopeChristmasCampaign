@@ -133,19 +133,19 @@
 <form name="shopping" id="shopping" action="buy.php" method="GET">
 <!-- <ul class="hope-cat"> -->
 
-<input type="checkbox" name="light" value="Light"> <img src="images/light.png"> <h5>GIFT <span>LIGHT</span>:</h5>
+<input type="checkbox" name="light"> <img src="images/light.png"> <h5>GIFT <span>LIGHT</span>:</h5>
 <p>10 Euros buys a solar lamp to give one family safe, sustainable and affordable light. <p>
 
-<input type="checkbox" name="water" value="Water">  <img src="images/water.png"> <h5>GIFT <span>WATER </span>:</h5> 
+<input type="checkbox" name="water">  <img src="images/water.png"> <h5>GIFT <span>WATER </span>:</h5> 
 <p>25 Euros will buy a family of 6 clean drinking water (and better health) for one year.</p>
 
-<input type="checkbox" name="health" value="Health">  <img src="images/health.png"> <h5>GIFT <span>HEALTH </span>:</h5> 
+<input type="checkbox" name="health">  <img src="images/health.png"> <h5>GIFT <span>HEALTH </span>:</h5> 
 <p>50 Euros buys seeds and plants and pays a gardener's salary to grow fresh produce for new mothers and the elderly.</p>
 
-<input type="checkbox" name="future" value="Future">  <img src="images/future.png"> <h5>GIFT THEM A <span>FUTURE </span>:</h5> 
+<input type="checkbox" name="future">  <img src="images/future.png"> <h5>GIFT THEM A <span>FUTURE </span>:</h5> 
 <p>100 Euros will pay a teacher for one month to teach a whole village and give them better prospects.</p>
   
-<input type="checkbox" name="dignity" value="Dignity">  <img src="images/toilet.PNG"> <h5>GIFT <span>DIGNITY </span>:</h5> 
+<input type="checkbox" name="dignity">  <img src="images/toilet.PNG"> <h5>GIFT <span>DIGNITY </span>:</h5> 
 <p>200 Euros will build a toilet for a family, improving sanitation, giving privacy and safety especially for women and girls.</p>
     
 <!-- </ul> -->

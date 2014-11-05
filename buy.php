@@ -6,12 +6,45 @@
 // The class names are based upon Twitter Bootstrap (http://twitter.github.com/bootstrap/)
 
 // This page is used to make a purchase.
-
-// Every page needs the configuration file:
-require('includes/config.inc.php');
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $cart = array();
+    $amt_total = 0;
+    echo "The GET is $_GET";
+    var_dump($_GET);
+    $numItems = 0;
+    if (isset($_GET['light'])) {
+      $amt_total += 1000;
+      $cart[1] = "LIGHT (EUR 10)";
+      $numItems++;
+    }
+    if (isset($_GET['water'])) {
+      $amt_total += 2500;
+      $cart[2] = "WATER (EUR 25)";
+      $numItems++;
+    }
+    if (isset($_GET['health'])) {
+      $amt_total += 5000;
+      $cart[3] = "HEALTH (EUR 50)";
+      $numItems++;
+    }
+    if (isset($_GET['future'])) {
+      $amt_total += 10000;
+      $cart[4] = "A FUTURE (EUR 100)";
+      $numItems++;
+    }
+    if (isset($_GET['dignity'])) {
+      $amt_total += 20000;
+      $cart[5] = "DIGNITY (EUR 200)";
+      $numItems++;
+    }
+    
+    $amt_eur = $amt_total/100;
+    $fee = $amt_eur * 0.029 + 0.30;
+    $amt_eur_t = $amt_eur + $fee;
+}
 
 // Uses sessions to test for duplicate submissions:
-session_start();
+//session_start();
 
 ?>
 <!doctype html>
@@ -102,9 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$errors['token'] = 'The order cannot be processed. Please make sure you have JavaScript enabled and try again.';
 	}
 	
-	// Set the order amount somehow:
-	//$amount = 2091; // $20, in cents
-
 	// Validate other form data!
 
 	// If no errors, process the order:
@@ -144,7 +174,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // Store the order in the database.
                     // Send the email.
                     // Celebrate!
-                    echo "<div class='alert'><h4>Transaction completed! Thanks for shopping :)</h4></div>";
+                    echo "<div class='alert alert-success'>
+                    <a href='#' class='close' data-dismiss='alert'>&times;</a>
+                    Your transfer was successful. Thank you for your donation!</div>";
                     
                     $host = "localhost";
                     $user = "root";
@@ -170,13 +202,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } 
                 else 
                 { // Charge was not paid!	
-                    echo "<div class='alert'><h4>Payment System Error!</h4>Your payment could NOT be processed (i.e., you have not been charged) because the payment system rejected the transaction. You can try again or use another card.</div>";
-                
-                
+                    echo "<div class='alert alert-error'><h4>Payment System Error!</h4>Your payment could NOT be processed (i.e., you have not been charged) because the payment system rejected the transaction. You can try again or use another card. If you face further problems, do drop us a line at info@unitedforhope.org</div>";
                 }
             }
             else { // Customer was not created!	
-                echo "<div class='alert'><h4>Could not create Customer! Something is wrong here..</h4></div>";
+                echo "<div class='alert alert-error'><h4>Could not create Customer! Something is wrong here..</h4></div>";
             }			
 		} catch (Stripe_CardError $e) {
 		    // Card was declined.
@@ -197,37 +227,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	//require-validation data-cc-on-file="false" 
 } // Form submission.
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        
-    echo "The GET is $_GET";
-    var_dump($_GET);
-
-    $light = $_GET['light'];
-    $water  = $_GET['water'];
-    $health = $_GET['health'];
-    $future = $_GET['future'];
-    $dignity = $_GET['dignity'];
-    $amt_total = 0;
-    if($light == 'Light')
-        $amt_total += 10;
-    if($water == 'Water')
-        $amt_total += 25;
-    if($health == 'Health')
-        $amt_total += 50;
-    if($future == 'Future')
-        $amt_total += 100;
-    if($future == 'Dignity')
-        $amt_total += 200;
-}
 ?>
     <div class="container">
     <div class='row'>
         <div class='col-md-3'></div>
         <div class='col-md-6'>
-            <div class="container"> 
+            <div class="row" style="padding-left:20px padding-right:20px"> 
                 <h2>The Gift Hope Christmas Shopping List</h2>
-                <h5>You have chosen to GIFT the following on the occasion of Christmas: <?php echo "<ul><li>$light</li><li>$water</li><li>$health</li><li>$future</li><li>$dignity<li></ul> <h5>The total mount is EUR $amt_total. </h5>";  ?> <br />
+                <h5>This is a secure page.</h5>
+                <h5 class="alert alert-warning">You have chosen to GIFT the following this Christmas: 
+                    <?php 
+                    foreach($cart as $x=>$x_value) {
+                      echo "<ul><li>". $x_value ."</li></ul>";
+                    }
+                    echo "<h5>The Total amount is EUR ". $amt_eur . " + EUR " . $fee . " Transaction fee * </h5> 
+                    <p>* A Transaction fee of 2.9% + 30 cents on the total amount is levied by the payment gateway.</p>";  ?> <br />
                 If you wish to proceed, please enter your card details below.</h5>
+                <h5>Not what you want to buy? <a type="button" class="btn btn-default" href='index.php#portfolio'>Go back</a></h5>
+                
             </div>
             <div class="row" style="padding-top:20px">
                 <form accept-charset="UTF-8" action="buy.php" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_test_IOwaVhL2sF2ND7UlFJw6ISeu" id="payment-form" method="POST">
@@ -571,7 +588,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     </div>
                     <div class='form-row'>
                       <div class='col-md-12 form-group'>
-                        <button class='form-control btn btn-primary submit-button' id='gift' type='submit'>GIFT »</button>
+                        <button class='form-control btn btn-primary submit-button' id='gift' type='submit' data-loading-text="Processing...">Pay</button>
                       </div>
                     </div>
                     <div class='form-row'>
