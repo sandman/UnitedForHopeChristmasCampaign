@@ -6,45 +6,10 @@
 // The class names are based upon Twitter Bootstrap (http://twitter.github.com/bootstrap/)
 
 // This page is used to make a purchase.
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $cart = array();
-    $amt_total = 0;
-    echo "The GET is $_GET";
-    var_dump($_GET);
-    $numItems = 0;
-    if (isset($_GET['light'])) {
-      $amt_total += 1000;
-      $cart[1] = "LIGHT (EUR 10)";
-      $numItems++;
-    }
-    if (isset($_GET['water'])) {
-      $amt_total += 2500;
-      $cart[2] = "WATER (EUR 25)";
-      $numItems++;
-    }
-    if (isset($_GET['health'])) {
-      $amt_total += 5000;
-      $cart[3] = "HEALTH (EUR 50)";
-      $numItems++;
-    }
-    if (isset($_GET['future'])) {
-      $amt_total += 10000;
-      $cart[4] = "A FUTURE (EUR 100)";
-      $numItems++;
-    }
-    if (isset($_GET['dignity'])) {
-      $amt_total += 20000;
-      $cart[5] = "DIGNITY (EUR 200)";
-      $numItems++;
-    }
-    
-    $amt_eur = $amt_total/100;
-    $fee = $amt_eur * 0.029 + 0.30;
-    $amt_eur_t = $amt_eur + $fee;
-}
+
 
 // Uses sessions to test for duplicate submissions:
-//session_start();
+session_start();
 
 ?>
 <!doctype html>
@@ -95,11 +60,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 require('includes/config.inc.php');
 
 // Uses sessions to test for duplicate submissions:
-session_start();
+//session_start();
 
 // Set the Stripe key:
 // Uses STRIPE_PUBLIC_KEY from the config file.
 echo '<script type="text/javascript">Stripe.setPublishableKey("' . STRIPE_PUBLIC_KEY . '");</script>';
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $cart = array();
+    $_SESSION['cart'] = $cart;
+    $amt_total = 0;
+    echo "The GET is $_GET";
+    var_dump($_GET);
+    $numItems = 0;
+    if (isset($_GET['light'])) {
+      $amt_total += 1000;
+      $_SESSION['cart'][1] = "LIGHT (EUR 10)";
+      $numItems++;
+    }
+    if (isset($_GET['water'])) {
+      $amt_total += 2500;
+      $_SESSION['cart'][2]  = "WATER (EUR 25)";
+      $numItems++;
+    }
+    if (isset($_GET['health'])) {
+      $amt_total += 5000;
+      $_SESSION['cart'][3] = "HEALTH (EUR 50)";
+      $numItems++;
+    }
+    if (isset($_GET['future'])) {
+      $amt_total += 10000;
+      $_SESSION['cart'][4] = "A FUTURE (EUR 100)";
+      $numItems++;
+    }
+    if (isset($_GET['dignity'])) {
+      $amt_total += 20000;
+      $_SESSION['cart'][5] = "DIGNITY (EUR 200)";
+      $numItems++;
+    }
+    $_SESSION['amt_total'] = $amt_total;
+    $amt_eur = $_SESSION['amt_total']/100;
+    $fee = $amt_eur * 0.029 + 0.30;
+    $amt_eur_t = $amt_eur + $fee;
+    $_SESSION['numItems'] = $numItems;
+    $_SESSION['amt_eur'] = $amt_eur;
+    $_SESSION['fee'] = $fee;
+
+}
 
 // Check for a form submission:
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -122,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $region = $_POST['region'];
         $postcode = $_POST['postal-code'];
         $country = $_POST['country'];
-        $amount = $amt_total; //$_POST['amount'];
+        $amount = $_SESSION['amt_total']; //$_POST['amount'];
 		// Check for a duplicate submission, just in case:
 		// Uses sessions, you could use a cookie instead.
 		if (isset($_SESSION['token']) && ($_SESSION['token'] == $token)) {
@@ -237,10 +244,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h5>This is a secure page.</h5>
                 <h5 class="alert alert-warning">You have chosen to GIFT the following this Christmas: 
                     <?php 
-                    foreach($cart as $x=>$x_value) {
-                      echo "<ul><li>". $x_value ."</li></ul>";
+                    foreach($cart as $items) {
+                      echo "<ul><li>". $items ."</li></ul>";
                     }
-                    echo "<h5>The Total amount is EUR ". $amt_eur . " + EUR " . $fee . " Transaction fee * </h5> 
+                    echo "<h5>The Total amount is EUR ". $_SESSION['amt_eur'] . " + EUR " . $_SESSION['fee'] . " Transaction fee * </h5> 
                     <p>* A Transaction fee of 2.9% + 30 cents on the total amount is levied by the payment gateway.</p>";  ?> <br />
                 If you wish to proceed, please enter your card details below.</h5>
                 <h5>Not what you want to buy? <a type="button" class="btn btn-default" href='index.php#portfolio'>Go back</a></h5>
