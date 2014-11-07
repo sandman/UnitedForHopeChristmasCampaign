@@ -132,7 +132,7 @@
  
 <form name="shopping" id="shopping" action="buy.php" method="GET">
 <!-- <ul class="hope-cat"> -->
-
+<p>Choose atleast one gift from the list below.</p>
 <input type="checkbox" name="light"> <img src="images/light.png"> <h5>GIFT <span>LIGHT</span>:</h5>
 <p>10 Euros buys a solar lamp to give one family safe, sustainable and affordable light. <p>
 
@@ -148,18 +148,18 @@
 <input type="checkbox" name="dignity">  <img src="images/toilet.PNG"> <h5>GIFT <span>DIGNITY </span>:</h5> 
 <p>200 Euros will build a toilet for a family, improving sanitation, giving privacy and safety especially for women and girls.</p>
     
-<!-- </ul> -->
+<br />
 <h5>CHOOSE YOUR GIFT AND PURCHASE NOW IN TIME FOR CHRISTMAS DELIVERY.</h5>
-<input type="submit" class="buy-btn">
+<input type="submit" class="buy-btn" value="Buy Now" data-toggle="tooltip" data-placement="right" title="Select at least one item from above" >
 </form>
-<script>$("#shopping").submit(function(){
-    var checked = $("#shopping input:checked").length > 0;
-    if (!checked){
-        alert("Please select atleast one Gift.");
-        return false;
-    }
-});</script>
-<h5>Or reach out to us at:  <span style="color:#585858">info@unitedforhope.org</span></h5>
+<script>
+var checkboxes = $("input[type='checkbox']")
+submitButt = $("input[type='submit']");
+checkboxes.click(function() {
+    submitButt.attr("disabled", !checkboxes.is(":checked"));
+});
+</script>
+<h5>Reach out to us at:  <span style="color:#585858">info@unitedforhope.org</span></h5>
 <h6>United for Hope is a registered NGO committed to the empowerment of the poor and marginalized in rural India via sustainable and integrated village living. Our guiding vision is that all development activities must be sustainable to be successful. Through clean water & sanitation, solar energy, and education, we strive to promote healthy and sustainable living in rural India. </h6>
 				</div>
 			</div>
@@ -212,18 +212,8 @@
         </div>
     </section>
     
-<script>
-    $('select').change(function(){
-    console.log($(this).parent());
-    $(this).parent('form').find('.save').removeAttr('disabled');
-    })
-</script>
-    <footer>
-       
-            <div class="row-footer">
-               
-                    
-               
+    <footer> 
+            <div class="row-footer">      
                 <div class="button-social">
                     <ul class="list-inline social-buttons">
 <li><a href="mailto:info@unitedforhope.org" target="_blank" title="Emai"><i class="fa fa-envelope-square"></i></a></li> 

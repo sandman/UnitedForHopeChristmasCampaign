@@ -1,21 +1,12 @@
 <?php # buy.php 
-// Created by Larry Ullman, www.larryullman.com, @LarryUllman
-// Posted as part of the series "Processing Payments with Stripe"
-// http://www.larryullman.com/series/processing-payments-with-stripe/
-// Last updated February 20, 2013
-// The class names are based upon Twitter Bootstrap (http://twitter.github.com/bootstrap/)
-
-// This page is used to make a purchase.
-
-
 // Uses sessions to test for duplicate submissions:
 session_start();
-
 ?>
-<!doctype html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width"/>
 	<title>United For Hope Christmas Fundraiser - Gift Light</title>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -181,10 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // Store the order in the database.
                     // Send the email.
                     // Celebrate!
-                    echo "<div class='alert alert-success'>
-                    <a href='#' class='close' data-dismiss='alert'>&times;</a>
-                    Your transfer was successful. Thank you for your donation!</div>";
-                    
                     $host = "localhost";
                     $user = "root";
                     $pass = "sandybits";
@@ -192,7 +179,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         
                     # the data we want to insert
                     $data = array( 'name' => $nameOnCard, 'email' => $email, 'customer_id' => $customer->id, 'amount' => $amount, 'paid' => true , 'address1' => $address1, 'address2' => $address2, 'city' => $city, 'region' => $region, 'postcode' => $postcode, 'country' => $country );
-
                     
                     try {
                         # MySQL with PDO_MYSQL
@@ -205,15 +191,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     catch(PDOException $e) {
                         echo $e->getMessage();
                     }
+                    
+                    header("Location: http://localhost/UnitedForHope/httpdocs/givehope/success.htm");
 
                 } 
                 else 
                 { // Charge was not paid!	
-                    echo "<div class='alert alert-error'><h4>Payment System Error!</h4>Your payment could NOT be processed (i.e., you have not been charged) because the payment system rejected the transaction. You can try again or use another card. If you face further problems, do drop us a line at info@unitedforhope.org</div>";
+                    echo "<div class='alert alert-danger'><h4>Payment System Error!</h4>Your payment could NOT be processed (i.e., you have not been charged) because the payment system rejected the transaction. You can try again or use another card. If you face further problems, do drop us a line at info@unitedforhope.org</div>";
                 }
             }
             else { // Customer was not created!	
-                echo "<div class='alert alert-error'><h4>Could not create Customer! Something is wrong here..</h4></div>";
+                echo "<div class='alert alert-danger'><h4>Could not create Customer! Something is wrong here..</h4></div>";
             }			
 		} catch (Stripe_CardError $e) {
 		    // Card was declined.
@@ -259,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div style="margin:0;padding:0;display:inline">
                 <?php // Show PHP errors, if they exist:
                     if (isset($errors) && !empty($errors) && is_array($errors)) {
-                        echo '<div class="alert alert-error"><h4>Error!</h4>The following error(s) occurred:<ul>';
+                        echo '<div class="alert alert-danger" role="alert"><h4>Error!</h4>The following error(s) occurred:<ul>';
                         foreach ($errors as $e) {
                             echo "<li>$e</li>";
                         }
