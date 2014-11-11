@@ -603,6 +603,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Bootstrap Core JavaScript -->
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrapValidator.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-confirmation.js"></script>
 
 </body>
 </html>

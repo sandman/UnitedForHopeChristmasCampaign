@@ -210,6 +210,7 @@ $(document).ready(function () {
     
     var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
 
+   // $('[data-toggle="confirmation"]').confirmation();
 	// Watch for a form submission:
 	$("#payment-form").submit(function (event) {
 		// Flag variable:
