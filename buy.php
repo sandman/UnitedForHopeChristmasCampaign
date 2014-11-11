@@ -9,7 +9,8 @@ session_start();
     <meta name="viewport" content="width=device-width"/>
 	<title>United For Hope Christmas Fundraiser - Gift Light</title>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css" >
+    <link rel="stylesheet" href="css/bootstrapValidator.min.css"/>
     <style>
         .full {
           background: url(images/second-content.jpg) no-repeat center center fixed; 
@@ -113,12 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
 		$token = $_POST['stripeToken'];
         $email  = $_POST['emailAddress'];
-        $nameOnCard = $_POST['Name'];
-		$address1 = $_POST['address-line1'];
-        $address2 = $_POST['address-line2'];
+        $nameOnCard = $_POST['fullName'];
+		$address1 = $_POST['addressLine1'];
+        $address2 = $_POST['addressLine2'];
         $city = $_POST['city'];
         $region = $_POST['region'];
-        $postcode = $_POST['postal-code'];
+        $postcode = $_POST['postCode'];
         $country = $_POST['country'];
         $amount = $_SESSION['amt_total']; //$_POST['amount'];
 		// Check for a duplicate submission, just in case:
@@ -169,20 +170,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Check that it was paid:
                 if ($charge->paid == true) {
 
+                    
                     // Store the order in the database.
                     // Send the email.
-                    // Celebrate!
-                    $host = "localhost";
-                    $user = "root";
-                    $pass = "sandybits";
-                    $dbname = "mysql";
-                                        
+                    // Celebrate!                                        
                     # the data we want to insert
                     $data = array( 'name' => $nameOnCard, 'email' => $email, 'customer_id' => $customer->id, 'amount' => $amount, 'paid' => true , 'address1' => $address1, 'address2' => $address2, 'city' => $city, 'region' => $region, 'postcode' => $postcode, 'country' => $country );
                     
                     try {
+                        require('includes/dbconf.inc.php');
                         # MySQL with PDO_MYSQL
-                        $DBH = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+                        $DBH = new PDO("mysql:host=HOST;dbname=DATABASE", USER, PASSWORD);
                         $DBH->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
                         $STH = $DBH->prepare("INSERT INTO stripe_user_info (name, email, customer_id, amount, paid, address1, address2, city, region, postcode, country) VALUES (:name, :email, :customer_id, :amount, :paid, :address1, :address2, :city, :region, :postcode, :country)");
                         $STH->execute((array) $data);
@@ -193,7 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                     
                     header("Location: http://localhost/UnitedForHope/httpdocs/givehope/success.htm");
-
                 } 
                 else 
                 { // Charge was not paid!	
@@ -227,22 +224,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class='row'>
         <div class='col-md-3'></div>
         <div class='col-md-6'>
-            <div class="row" style="padding-left:20px padding-right:20px"> 
-                <h2>The Gift Hope Christmas Shopping List</h2>
-                <h5>This is a secure page.</h5>
-                <h5 class="alert alert-warning">You have chosen to GIFT the following this Christmas: 
+           <h2 align=center>The Gift Hope Christmas Checkout page</h2>
+            <div class="row" align=left style="padding-left:20px padding-right:20px"> 
+                <h5 class="alert alert-warning" align='left' style='padding-left:20px'>You have chosen to GIFT the following this Christmas: </h5>
                     <?php 
-                    foreach($cart as $items) {
-                      echo "<ul><li>". $items ."</li></ul>";
+                    foreach($_SESSION['cart'] as $items) {
+                      echo "<ul align='left' style='padding-left:40px'><li>". $items ."</li></ul>";
                     }
-                    echo "<h5>The Total amount is EUR ". $_SESSION['amt_eur'] . " + EUR " . $_SESSION['fee'] . " Transaction fee * </h5> 
-                    <p>* A Transaction fee of 2.9% + 30 cents on the total amount is levied by the payment gateway.</p>";  ?> <br />
-                If you wish to proceed, please enter your card details below.</h5>
-                <h5>Not what you want to buy? <a type="button" class="btn btn-default" href='index.php#portfolio'>Go back</a></h5>
+                    echo "<h5 align='left' style='padding-left:20px'>Total Amount: EUR ". $_SESSION['amt_eur'] . " + EUR " . $_SESSION['fee'] . " transaction fee * </h5> 
+                    <h6 align='left' style='padding-left:20px'>* A Transaction fee of 2.9% + 30 cents is charged by the payment gateway.</h6>";  ?>
                 
+                <h5 align='left' style='padding-left:20px'>If you wish to proceed, please enter your card details below. <span class="glyphicon glyphicon-arrow-down" align='right' style="padding-right:20px"></span></h5>
+                <h5 align='left' style='padding-left:20px'>Do you wish to change your selection? <a type="button" class="btn btn-default" href='index.php#portfolio'>Go back</a></h5>
             </div>
+            <hr />
+            <span class="row form" align='right' style="padding-right:20px"><span class="glyphicon glyphicon-lock" align='right' style="padding-right:20px"></span>Secure</span>
             <div class="row" style="padding-top:20px">
-                <form accept-charset="UTF-8" action="buy.php" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_test_IOwaVhL2sF2ND7UlFJw6ISeu" id="payment-form" method="POST">
+                <form accept-charset="UTF-8" action="buy.php" class="require-validation" data-cc-on-file="false" id="payment-form" method="POST">
                 <input name="amount" type="hidden" value=$amt_total />
                 <div style="margin:0;padding:0;display:inline">
                 <?php // Show PHP errors, if they exist:
@@ -259,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class='form-row'>
                       <div class='col-xs-12 form-group required'>
                         <label class='control-label'>Full Name</label>
-                        <input class='NameOnCard form-control' name='Name' size='20' type='text'>
+                        <input class='NameOnCard form-control' name='fullName' placeholder='Your Full Name' size='30' type='text'>
                       </div>
                     </div>
                     <div class='form-row'>
@@ -272,14 +270,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class='form-row'>
                         <div class='col-xs-12 form-group required'>
                             <label class='control-label'>Complete Address</label>
-                            <input name="address-line1" size="40" type="text" placeholder="Street address, P.O. box, company name, c/o"
+                            <input name="addressLine1" size="40" type="text" placeholder="Street address, P.O. box, company name, c/o"
                             class="address-line1 form-control">
                         </div>
                     </div>
                     <!-- address-line2 input-->
                     <div class='form-row'>
                         <div class='col-xs-12 form-group required'>
-                            <input name="address-line2" size="40" type="text" placeholder="Apartment, suite , unit, building, floor, etc."
+                            <input name="addressLine2" size="40" type="text" placeholder="Apartment, suite , unit, building, floor, etc."
                             class="address-line2 form-control">
                         </div>
                     </div>
@@ -302,7 +300,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class='form-row'>
                         <div class='col-xs-4 form-group required'>
                             <label class="control-label">Zip / Postal Code</label>
-                            <input id="postal-code" name="postal-code" type="text" placeholder="zip or postal code"
+                            <input id="postal-code" name="postCode" type="text" placeholder="zip or postal code"
                             class="postal-code form-control">
                         </div>
                     </div>
@@ -577,7 +575,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                       <div class='col-md-12'>
                         <div class='form-control total btn btn-info'>
                           Total:
-                          <span class='amount'>EUR </span>
+                          <span class='amount'>EUR <?php echo $_SESSION['amt_eur'] + $_SESSION['fee'] ?></span>
                         </div>
                       </div>
                     </div>
@@ -603,7 +601,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="js/jquery-1.11.0.js"></script>
     <script src="js/buy.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrapValidator.min.js"></script>
 
 </body>
 </html>
