@@ -207,29 +207,25 @@ $(document).ready(function () {
             }
         }
     });
-            
+    
+    var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
+
 	// Watch for a form submission:
 	$("#payment-form").submit(function (event) {
-
 		// Flag variable:
-		var error = false;
-		
+		//var error = false;	
 		// Check for errors:
-		if (!error) {
-			
-			// Get the Stripe token:
+		//if (!error) {			
+        // Get the Stripe token:
 			Stripe.createToken({
 				number: ccNum,
 				cvc: cvcNum,
 				exp_month: expMonth,
 				exp_year: expYear
 			}, stripeResponseHandler);
-
-		}
-
+		//}
 		// Prevent the form from submitting:
 		return false;
-
 	}); // Form submission
 	
 }); // Document ready.
