@@ -207,8 +207,6 @@ $(document).ready(function () {
             }
         }
     });
-    
-    var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
 
    // $('[data-toggle="confirmation"]').confirmation();
 	// Watch for a form submission:
@@ -216,7 +214,8 @@ $(document).ready(function () {
 		// Flag variable:
 		//var error = false;	
 		// Check for errors:
-		//if (!error) {			
+		//if (!error) {		
+            var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
         // Get the Stripe token:
 			Stripe.createToken({
 				number: ccNum,
