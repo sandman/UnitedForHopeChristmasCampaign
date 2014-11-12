@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } 
                 else 
                 { // Charge was not paid!	
-                    echo "<div class='alert alert-danger'><h4>Payment System Error!</h4>Your payment could NOT be processed (i.e., you have not been charged) because the payment system rejected the transaction. You can try again or use another card. If you face further problems, do drop us a line at info@unitedforhope.org</div>";
+                    header("Location: http://localhost/UnitedForHope/httpdocs/givehope/failed.htm");
                 }
             }
             else { // Customer was not created!	
@@ -238,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h5 align='left' style='padding-left:20px'>Do you wish to change your selection? <a type="button" class="btn btn-default" href='index.php#portfolio'>Go back</a></h5>
             </div>
             <hr />
-            <span class="row form" align='right' style="padding-right:20px"><span class="glyphicon glyphicon-lock" align='right' style="padding-right:20px"></span>Secure</span>
+            <span align='right' style="padding-right:20px"><span class="glyphicon glyphicon-lock" align='right' style="padding-right:20px"></span>Secure</span>
             <div class="row" style="padding-top:20px">
                 <form accept-charset="UTF-8" action="buy.php" class="require-validation" data-cc-on-file="false" id="payment-form" method="POST">
                 <input name="amount" type="hidden" value=$amt_total />
