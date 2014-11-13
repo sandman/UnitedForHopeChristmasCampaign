@@ -129,7 +129,7 @@
 			<div class="container-second">
 				
 <h3>THE GIFT <span>HOPE</span> CHRISTMAS LIST</h3>
- 
+<div id="gift">
 <form name="shopping" id="shopping" action="buy.php" method="GET">
 <!-- <ul class="hope-cat"> -->
 <p>Choose atleast one gift from the list below.</p>
@@ -152,13 +152,8 @@
 <h5>CHOOSE YOUR GIFT AND PURCHASE NOW IN TIME FOR CHRISTMAS DELIVERY.</h5>
 <input type="submit" class="buy-btn" value="Buy Now" data-toggle="tooltip" data-placement="right" title="Select at least one item from above" >
 </form>
-<script>
-var checkboxes = $("input[type='checkbox']")
-submitButt = $("input[type='submit']");
-checkboxes.click(function() {
-    submitButt.attr("disabled", !checkboxes.is(":checked"));
-});
-</script>
+</div>
+
 <h5>Reach out to us at:  <span style="color:#585858">info@unitedforhope.org</span></h5>
 <h6>United for Hope is a registered NGO committed to the empowerment of the poor and marginalized in rural India via sustainable and integrated village living. Our guiding vision is that all development activities must be sustainable to be successful. Through clean water & sanitation, solar energy, and education, we strive to promote healthy and sustainable living in rural India. </h6>
 				</div>
@@ -254,103 +249,9 @@ checkboxes.click(function() {
    
 
     <!-- Custom Theme JavaScript -->
-    <script src="js/agency.js"></script>
-<script type='text/javascript'>
+    <script type="application/x-javascript" src="js/agency.js"></script>
+    <script type="application/x-javascript" src="js/main.js"></script>
 
-function formValidator(){
-	// Make quick references to our fields
-	var yourname = document.getElementById('yourname');
-	var number = document.getElementById('number');
-	var email = document.getElementById('email');
-	var message = document.getElementById('message');
-	// Check each input in the order that it appears in the form!
-		if(isAlphabet(yourname, "Please enter only letters for Name")){
-			if(emailValidator(email, "Please enter a valid E-Mail Address")){
-				if(notEmpty(number, "Please Enter Phone number")){
-					if(notEmpty(message, "Please Enter  Message")){
-						return true;
-					}
-				}
-			}
-		}
-return false;
-
-}
-
-function notEmpty(elem, helperMsg){
-	if(elem.value.length == 0){
-		alert(helperMsg);
-		elem.focus(); // set the focus to this input
-		return false;
-	}
-	return true;
-}
-
-function isNumeric(elem, helperMsg){
-	var numericExpression = /^[0-9]+$/;
-	if(elem.value.match(numericExpression)){
-		return true;
-	}else{
-		alert(helperMsg);
-		elem.focus();
-		return false;
-	}
-}
-
-function isAlphabet(elem, helperMsg){
-	var alphaExp = /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]*$/;
-	if(elem.value.match(alphaExp)){
-		return true;
-	}else{
-		alert(helperMsg);
-		elem.focus();
-		return false;
-	}
-}
-
-function isAlphanumeric(elem, helperMsg){
-	var alphaExp = /^[0-9a-zA-Z]+$/;
-	if(elem.value.match(alphaExp)){
-		return true;
-	}else{
-		alert(helperMsg);
-		elem.focus();
-		return false;
-	}
-}
-
-function lengthRestriction(elem, min, max){
-	var uInput = elem.value;
-	if(uInput.length >= min && uInput.length <= max){
-		return true;
-	}else{
-		alert("Please enter between " +min+ " and " +max+ " characters");
-		elem.focus();
-		return false;
-	}
-}
-
-function madeSelection(elem, helperMsg){
-	if(elem.value == "Please Choose"){
-		alert(helperMsg);
-		elem.focus();
-		return false;
-	}else{
-		return true;
-	}
-}
-
-function emailValidator(elem, helperMsg){
-	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
-	if(elem.value.match(emailExp)){
-		return true;
-	}else{
-		alert(helperMsg);
-		elem.focus();
-		return false;
-	}
-}
-</script>
 <?php
 if(isset($_POST['addmessage']))
 {

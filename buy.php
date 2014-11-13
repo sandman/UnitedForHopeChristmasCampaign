@@ -18,12 +18,10 @@ session_start();
           -moz-background-size: cover;
           -o-background-size: cover;
           background-size: cover;
-        }
-        
+        } 
         .col-md-6 {
             background-color: #fff;
-        }
-        
+        } 
         .submit-button {
           margin-top: 5px;
         }
@@ -62,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $cart = array();
     $_SESSION['cart'] = $cart;
     $amt_total = 0;
-    echo "The GET is $_GET";
+    //echo "The GET is $_GET";
     var_dump($_GET);
     $numItems = 0;
     if (isset($_GET['light'])) {
@@ -109,8 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// Need a payment token:
 	if (isset($_POST['stripeToken'])) {
         
-        echo "The POST is $_POST";
-        var_dump($_POST);
+        //echo "The POST is $_POST";
+        //var_dump($_POST);
 		
 		$token = $_POST['stripeToken'];
         $email  = $_POST['emailAddress'];
@@ -169,8 +167,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Check that it was paid:
                 if ($charge->paid == true) {
-
-                    
                     // Store the order in the database.
                     // Send the email.
                     // Celebrate!                                        
@@ -180,14 +176,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     try {
                         require('includes/dbconf.inc.php');
                         # MySQL with PDO_MYSQL
-                        $DBH = new PDO("mysql:host=HOST;dbname=DATABASE", USER, PASSWORD);
+                        $DBH = new PDO("mysql:host=localhost;dbname=mysql", USER, PASSWORD);
                         $DBH->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
                         $STH = $DBH->prepare("INSERT INTO stripe_user_info (name, email, customer_id, amount, paid, address1, address2, city, region, postcode, country) VALUES (:name, :email, :customer_id, :amount, :paid, :address1, :address2, :city, :region, :postcode, :country)");
                         $STH->execute((array) $data);
                         $DBH = null;
                     }
                     catch(PDOException $e) {
-                        echo $e->getMessage();
+                        echo "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
                     }
                     
                     header("Location: http://localhost/UnitedForHope/httpdocs/givehope/success.htm");
@@ -245,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div style="margin:0;padding:0;display:inline">
                 <?php // Show PHP errors, if they exist:
                     if (isset($errors) && !empty($errors) && is_array($errors)) {
-                        echo '<div class="alert alert-danger" role="alert"><h4>Error!</h4>The following error(s) occurred:<ul>';
+                        echo '<div class="alert alert-danger" role="alert" style="padding-left:20px padding-right:20px"><h4>Error!</h4>The following error(s) occurred:<ul>';
                         foreach ($errors as $e) {
                             echo "<li>$e</li>";
                         }
