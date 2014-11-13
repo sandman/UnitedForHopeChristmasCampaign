@@ -1,10 +1,3 @@
-// Created by Larry Ullman, www.larryullman.com, @LarryUllman
-// Posted as part of the series "Processing Payments with Stripe"
-// http://www.larryullman.com/series/processing-payments-with-stripe/
-// Last updated February 20, 2013
-
-// This page is intended to be stored in a public "js" directory.
-
 // This function is just used to display error messages on the page.
 // Assumes there's an element with an ID of "payment-errors".
 function reportError(msg) {
