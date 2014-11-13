@@ -11,7 +11,7 @@ function reportError(msg) {
 	// Show the error in the form:
 	$('#payment-errors').text(msg).addClass('alert alert-error');
 	// re-enable the submit button:
-	$('#submitBtn').prop('disabled', false);
+	$('#gift').prop('disabled', false);
 	return false;
 }
 
@@ -214,8 +214,10 @@ $(document).ready(function () {
 		// Flag variable:
 		//var error = false;	
 		// Check for errors:
-		//if (!error) {		
-            var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
+		//if (!error) {	
+        // disable the submit button to prevent repeated clicks:
+        $('#gift').attr("disabled", "disabled");
+        var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
         // Get the Stripe token:
 			Stripe.createToken({
 				number: ccNum,
