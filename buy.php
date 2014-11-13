@@ -160,7 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     "customer" => $customer->id, // Linking to Customer
                     "amount" => $amount, // amount in cents, again
                     "currency" => "eur",
-                  //  "card" => $token,
                     "description" => $nameOnCard
                     )
                 );
@@ -229,14 +228,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                     echo "<h5 align='left' style='padding-left:20px'>Total Amount: EUR ". $_SESSION['amt_eur'] . " + EUR " . $_SESSION['fee'] . " transaction fee * </h5> 
                     <h6 align='left' style='padding-left:20px'>* A Transaction fee of 2.9% + 30 cents is charged by the payment gateway.</h6>";  ?>
+                    <br>
                 
                 <h5 align='left' style='padding-left:20px'>If you wish to proceed, please enter your card details below. <span class="glyphicon glyphicon-arrow-down" align='right' style="padding-right:20px"></span></h5>
                 <h5 align='left' style='padding-left:20px'>Do you wish to change your selection? <a type="button" class="btn btn-default" href='index.php#portfolio'>Go back</a></h5>
             </div>
             <hr />
-            <span align='right' style="padding-right:20px"><span class="glyphicon glyphicon-lock" align='right' style="padding-right:20px"></span>Secure</span>
-            <div class="row" style="padding-top:20px">
-                <form accept-charset="UTF-8" action="buy.php" class="require-validation" data-cc-on-file="false" id="payment-form" method="POST">
+            <span align='right' style="padding-right:20px"><span class="glyphicon glyphicon-lock" align='right' style="padding-right:20px"></span>Secure Payment</span>
+            <div class="row" align="center" style="padding-top:20px">
+                <form accept-charset="UTF-8" action="buy.php" class="require-validation form-horizontal" data-cc-on-file="false" id="payment-form" method="POST">
                 <input name="amount" type="hidden" value=$amt_total />
                 <div style="margin:0;padding:0;display:inline">
                 <?php // Show PHP errors, if they exist:
@@ -577,7 +577,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class='form-row'>
                       <div class='col-md-12 form-group'>
-                        <button class='form-control btn btn-primary submit-button' id='gift' type='submit' data-loading-text="Processing...">Pay</button>
+                        <button class='form-control btn btn-primary submit-button' id='submitButton' type='submit' data-loading-text="Processing...">Pay</button>
                       </div>
                     </div>
                     <div class='form-row'>
@@ -594,12 +594,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         </div>
 
-    <script src="js/jquery-1.11.0.js"></script>
-    <script src="js/buy.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrapValidator.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap-confirmation.js"></script>
-
+    <script type="text/javascript" src="js/buy.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ function reportError(msg) {
 	// Show the error in the form:
 	$('#payment-errors').text(msg).addClass('alert alert-error');
 	// re-enable the submit button:
-	$('#gift').prop('disabled', false);
+	$('#submitButton').prop('disabled', false);
 	return false;
 }
 
@@ -201,7 +201,7 @@ $(document).ready(function () {
         }
     });
 
-   // $('[data-toggle="confirmation"]').confirmation();
+       // $('[data-toggle="confirmation"]').confirmation();
 	// Watch for a form submission:
 	$("#payment-form").submit(function (event) {
 		// Flag variable:
@@ -209,7 +209,8 @@ $(document).ready(function () {
 		// Check for errors:
 		//if (!error) {	
         // disable the submit button to prevent repeated clicks:
-        $('#gift').attr("disabled", "disabled");
+        $('#submitButton').prop('disabled', true);
+        $('#submitButton').attr("disabled", "disabled");
         var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
         // Get the Stripe token:
 			Stripe.createToken({
@@ -222,5 +223,4 @@ $(document).ready(function () {
 		// Prevent the form from submitting:
 		return false;
 	}); // Form submission
-	
 }); // Document ready.
